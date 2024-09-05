@@ -80,6 +80,18 @@ python manage.py startapp api
 
 en este caso hacemos todo lo relacionado a la rest api aqui
 
+cuando tenemos nuestro serializar, model y view deberiamos de hacer un:
+
+```bash
+python manage.py makemigrations
+```
+
+Para actualizar la base de datos
+
+```bash
+python manage.py migrate
+```
+
 5. _Ya tenemos el proyecto creado y entramos en esa carpeta y corremos el runserver para probar que todo funcione normalmente:_
 
 ```bash
