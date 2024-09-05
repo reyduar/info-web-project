@@ -63,21 +63,19 @@ con esto no deberiamos tener problema como; No se ha podido resolver la importac
 4. _Ahora con el entorno virtual activado, creamos el proyecto django_
 
 ```bash
-django-admin startproject djangoproj
+django-admin startproject backend
 ```
-
-> Nota: si queremos crear un modulo para el proyecto podemos usar el siguiente comando
 
 Vamos dentro del proyecto donde se encuentra nuestro manage.py
 
 ```bash
-cd djangoproj
+cd backend
 ```
 
-Corremos el siguiente comando:
+creamos nuestro modulo api:
 
 ```bash
-python manage.py startapp noticias-api
+python manage.py startapp api
 ```
 
 en este caso hacemos todo lo relacionado a la rest api aqui
@@ -85,7 +83,7 @@ en este caso hacemos todo lo relacionado a la rest api aqui
 5. _Ya tenemos el proyecto creado y entramos en esa carpeta y corremos el runserver para probar que todo funcione normalmente:_
 
 ```bash
-cd djangoproj
+cd backend
 ```
 
 ```bash
@@ -96,10 +94,10 @@ python manage.py runserver
 
 6. _Creamos el proyecto de react_
 
-Vamos crear el proyecto de React de la forma clasica con el npx create-react-app donde noticiasweb-app es el nombre que le ponemos al proyecto
+Vamos crear el proyecto de React de la forma clasica con el npx create-react-app donde frontend es el nombre que le ponemos al proyecto
 
 ```bash
-npx create-react-app noticiasweb-app
+npx create-react-app frontend
 ```
 
 Si está desactualizado alguna librería va a pedir ? Need to install the following packages: (y): y
@@ -107,7 +105,7 @@ Si está desactualizado alguna librería va a pedir ? Need to install the follow
 > Si clonamos el proyecto no necesitamos hacer el create react app lo que vamos hacer para levatar de forma local nuestro entorno de react es:
 
 ```bash
-cd noticiasweb-app
+cd frontend
 ```
 
 ```bash
