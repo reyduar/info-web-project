@@ -102,7 +102,23 @@ cd backend
 python manage.py runserver
 ```
 
-> Nota La url local es http://127.0.0.1:8000/
+- Endpoint para crear usuario
+
+```bash
+http://127.0.0.1:8000/api/user/register/
+```
+
+- Endpoint para pedir token (se necesita el usuario y password)
+
+```bash
+http://127.0.0.1:8000/api/token/
+```
+
+- Endpoint para refrescar el token (se necesita el refresh token)
+
+```bash
+http://127.0.0.1:8000/api/token/refresh/
+```
 
 6. _Creamos el proyecto de react_
 
