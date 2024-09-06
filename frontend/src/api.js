@@ -1,8 +1,9 @@
 import axios from "axios";
 import { ACCCESS_TOKEN } from "./constants";
+import { API_URL } from "./config";
 
 const api = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use(

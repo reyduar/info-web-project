@@ -23,7 +23,7 @@ function Logout() {
 
 function Register() {
   localStorage.clear();
-  return <Navigate to="/crear-usuario" />;
+  return <Navigate to="/login" />;
 }
 
 export default function App() {

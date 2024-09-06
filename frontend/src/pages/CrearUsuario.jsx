@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
 
 function CrearUsuario() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -11,9 +13,24 @@ function CrearUsuario() {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/login");
+  const onSubmit = async ({ email, password }) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    const payload = { username: email, password: password };
+    try {
+      const response = await api.post("user/register/", payload);
+      if (response.status === 201) {
+        navigate("/register");
+      } else {
+        alert("Error al registrar el nuevo usuario");
+      }
+    } catch (error) {
+      alert(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const password = watch("password", "");
@@ -23,24 +40,6 @@ function CrearUsuario() {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Nombre */}
-          <div>
-            <label className="block mb-1 font-medium" htmlFor="name">
-              Nombre
-            </label>
-            <input
-              id="name"
-              type="text"
-              {...register("name", { required: "Nombre es obligatorio" })}
-              className={`w-full px-4 py-2 border ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              } rounded-md`}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
-          </div>
-
           {/* Email */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="email">

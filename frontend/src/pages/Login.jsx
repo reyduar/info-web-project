@@ -1,16 +1,36 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
+import { ACCCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Aquí puedes agregar la lógica para autenticar al usuario
-    // Por ejemplo, redirigir al usuario al home después del login
-    navigate("/");
+  const handleSubmit = async (e) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    e.preventDefault();
+
+    try {
+      const response = await api.post("token/", { username: email, password });
+      if (response.status === 200) {
+        localStorage.setItem(ACCCESS_TOKEN, response.data.access);
+        localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+        navigate("/");
+      } else {
+        alert("Credenciales incorrectas");
+      }
+    } catch (error) {
+      navigate("/login");
+      alert(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,7 +70,7 @@ function Login() {
             type="submit"
             className="w-full py-3 bg-[#007ACC] text-white font-semibold rounded-md hover:bg-[#005f99] transition"
           >
-            Iniciar Sesión
+            {loading ? "Inciando Sesión.." : "Iniciar Sesión"}
           </button>
         </form>
         <p className="mt-4 text-center text-gray-600">
