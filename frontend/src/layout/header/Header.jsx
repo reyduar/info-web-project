@@ -6,11 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const navigate = useNavigate();
-
-  const logout = () => {
-    navigate("/login");
-  };
-
   return (
     <header className="bg-[#007ACC] text-white p-4 shadow-md flex items-center justify-between">
       <div className="flex items-center">
@@ -19,7 +14,7 @@ export const Header = () => {
       </div>
       <div className="relative">
         <button
-          onClick={logout}
+          onClick={() => navigate("/logout")}
           className="flex items-center text-white focus:outline-none"
         >
           <FaPowerOff className="text-2xl" />

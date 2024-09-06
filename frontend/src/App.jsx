@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./index.css";
 import Layout from "./layout/Layout";
 import Login from "./pages/Login";
@@ -10,6 +15,16 @@ import PerfilUsuario from "./pages/PerfilUsuario";
 import CrearNoticia from "./pages/CrearNoticia";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/router/ProtectedRoute";
+
+function Logout() {
+  localStorage.clear();
+  return <Navigate to="/login" />;
+}
+
+function Register() {
+  localStorage.clear();
+  return <Navigate to="/crear-usuario" />;
+}
 
 export default function App() {
   return (
@@ -33,6 +48,8 @@ export default function App() {
           <Route path="*" element={<NotFound />} /> {/* Ruta NotFound */}
           <Route path="/login" element={<Login />} />
           <Route path="/crear-usuario" element={<CrearUsuario />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </>
