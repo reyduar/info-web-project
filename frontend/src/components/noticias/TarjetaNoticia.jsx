@@ -1,9 +1,9 @@
 import { FaPencil, FaTrashCan } from "react-icons/fa6";
 
-export const TarjetaNoticia = ({ noticia }) => {
+export const TarjetaNoticia = ({ noticia, onDelete }) => {
   const { titulo, categoria, contenido, fechaPublicacion, autor } = noticia;
-  const onEdit = (e) => {};
-  const onDelete = (e) => {};
+  const editOnClick = (item) => {};
+  const deleteOnClick = (item) => onDelete(item);
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-4">
       <div className="flex justify-between items-center mb-4">
@@ -12,13 +12,13 @@ export const TarjetaNoticia = ({ noticia }) => {
         </h3>
         <div className="flex space-x-2">
           <button
-            onClick={onEdit}
+            onClick={() => editOnClick(noticia)}
             className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full"
           >
             <FaPencil />
           </button>
           <button
-            onClick={onDelete}
+            onClick={() => deleteOnClick(noticia)}
             className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
           >
             <FaTrashCan />

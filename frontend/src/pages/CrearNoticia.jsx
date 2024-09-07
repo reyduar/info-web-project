@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { CategoriaModal, Calendario, EditorContenido } from "../components";
+import { CategoriaModal, EditorContenido } from "../components";
+import api from "../api";
 
 function CrearNoticia() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categorias] = useState(["Tecnología", "Economía"]);
+  const [categorias, setCategorias] = useState([]);
   const {
     register,
     handleSubmit,
@@ -15,9 +16,22 @@ function CrearNoticia() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    reset(); // Limpiar el formulario después de enviarlo
+    try {
+      const payload = {
+        ...data,
+      };
+      const response = await api.post(`articles/`, payload);
+      if (response.status === 201) {
+        reset();
+        navigate("/noticias");
+      } else {
+        alert("Error al eliminar el articulo");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const openModal = () => {
@@ -27,6 +41,22 @@ function CrearNoticia() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const getCategorias = async () => {
+    try {
+      const response = await api.get("categories/");
+      if (response.status === 200) {
+        console.log(response.data);
+        setCategorias(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategorias();
+  }, []);
 
   return (
     <div className="flex justify-center mt-10">
@@ -39,26 +69,6 @@ function CrearNoticia() {
         </button>
         <h2 className="text-2xl font-bold mb-6">Crear Noticia</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">
-              Fecha de Publicación
-            </label>
-            <Calendario control={control} />
-            {errors.publishDate && (
-              <span className="text-red-500">Este campo es obligatorio</span>
-            )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Creado Por</label>
-            <input
-              type="text"
-              {...register("author", { required: true })}
-              className="w-full p-2 mt-1 border rounded"
-            />
-            {errors.author && (
-              <span className="text-red-500">Este campo es obligatorio</span>
-            )}
-          </div>
           <div className="mb-4">
             <label className="block text-gray-700">Título</label>
             <input

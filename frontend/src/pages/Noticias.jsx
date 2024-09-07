@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia } from "../components";
+import api from "../api";
 
 const noticiasData = [
   {
@@ -19,47 +20,55 @@ const noticiasData = [
     fechaPublicacion: "2024-08-30",
     autor: "María Gómez",
   },
-  {
-    categoria: "Economía",
-    titulo: "Análisis del mercado bursátil",
-    contenido:
-      "El mercado bursátil ha tenido una semana agitada con movimientos importantes...",
-    fechaPublicacion: "2024-08-30",
-    autor: "María Gómez",
-  },
-  {
-    categoria: "Economía",
-    titulo: "Análisis del mercado bursátil",
-    contenido:
-      "El mercado bursátil ha tenido una semana agitada con movimientos importantes...",
-    fechaPublicacion: "2024-08-30",
-    autor: "María Gómez",
-  },
-  {
-    categoria: "Economía",
-    titulo: "Análisis del mercado bursátil",
-    contenido:
-      "El mercado bursátil ha tenido una semana agitada con movimientos importantes...",
-    fechaPublicacion: "2024-08-30",
-    autor: "María Gómez",
-  },
   // Agrega más noticias según sea necesario
 ];
 
 function Noticias() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [articles, setArticles] = useState(noticiasData);
+  const [articlesFiltered, setArticlesFiltered] = useState(noticiasData);
   const navigate = useNavigate();
 
-  const filteredNoticias = noticiasData.filter((noticia) =>
-    noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleCrearNoticia = (event) => {
-    event.preventDefault();
-    // Aquí puedes agregar la lógica para registrar al usuario
-    // Por ejemplo, redirigir al usuario al login después del registro
+  const handleCrearNoticia = () => {
     navigate("/crear-noticia");
   };
+
+  const handlerSearch = (e) => {
+    const searchTerm = e.target.value;
+    setArticlesFiltered(
+      articles.filter((noticia) =>
+        noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  };
+
+  const getArticles = async () => {
+    try {
+      const response = await api.get("articles/");
+      if (response.status === 200) {
+        console.log(response.data);
+        setArticles(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (article) => {
+    try {
+      const response = await api.delete(`articles/delete/${article.id}}/`);
+      if (response.status === 204) {
+        getArticles();
+      } else {
+        alert("Error al eliminar el articulo");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getArticles();
+  }, []);
 
   return (
     <div className="p-6">
@@ -77,13 +86,16 @@ function Noticias() {
           type="text"
           placeholder="Buscar por título"
           className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handlerSearch(e)}
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredNoticias.map((noticia, index) => (
-          <TarjetaNoticia key={index} noticia={noticia} />
+        {articlesFiltered.map((noticia, index) => (
+          <TarjetaNoticia
+            key={index}
+            noticia={noticia}
+            onDelete={handleDelete}
+          />
         ))}
       </div>
     </div>

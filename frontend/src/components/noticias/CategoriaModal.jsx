@@ -1,17 +1,29 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import api from "../../api";
 
 export const CategoriaModal = ({ closeModal }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    closeModal();
-    // Lógica para agregar la categoría
+    try {
+      const payload = { ...data };
+      const response = await api.post(`categories/`, payload);
+      if (response.status === 201) {
+        reset();
+        closeModal();
+      } else {
+        alert("Error al crear la categoria");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
