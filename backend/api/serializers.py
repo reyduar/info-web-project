@@ -27,10 +27,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    author_name = serializers.CharField(source='author.username', read_only=True)
     class Meta:
         model = Article
         fields = ["id", "title", "content",
-                  "publication_date", "author", "category"]
+                  "publication_date", "author", "category", 'category_name', 'author_name']
         # author is not return de author to the user in the response
         extra_kwargs = {"author": {"read_only": True}}
 
@@ -38,3 +40,4 @@ class ArticleSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         article = Article.objects.create(**validated_data)
         return article
+
