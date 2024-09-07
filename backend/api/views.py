@@ -11,6 +11,7 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+
 class CategoriesListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
@@ -34,8 +35,10 @@ class ArticlesListCreate(generics.ListCreateAPIView):
         return Article.objects.filter(author=user)
 
     def perform_create(self, serializer):
+        user = self.request.user
+        print(serializer)
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
+            serializer.save(author=user)
         else:
             print(serializer.errors)
 
