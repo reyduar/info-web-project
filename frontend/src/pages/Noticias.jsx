@@ -3,29 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia } from "../components";
 import api from "../api";
 
-const noticiasData = [
-  {
-    categoria: "Tecnología",
-    titulo: "Nuevo lanzamiento de smartphone",
-    contenido:
-      "Se ha lanzado un nuevo smartphone con características innovadoras...",
-    fechaPublicacion: "2024-08-31",
-    autor: "Juan Pérez",
-  },
-  {
-    categoria: "Economía",
-    titulo: "Análisis del mercado bursátil",
-    contenido:
-      "El mercado bursátil ha tenido una semana agitada con movimientos importantes...",
-    fechaPublicacion: "2024-08-30",
-    autor: "María Gómez",
-  },
-  // Agrega más noticias según sea necesario
-];
-
 function Noticias() {
-  const [articles, setArticles] = useState(noticiasData);
-  const [articlesFiltered, setArticlesFiltered] = useState(noticiasData);
+  const [articles, setArticles] = useState([]);
+  const [articlesFiltered, setArticlesFiltered] = useState([]);
   const navigate = useNavigate();
 
   const handleCrearNoticia = () => {
@@ -47,6 +27,7 @@ function Noticias() {
       if (response.status === 200) {
         console.log(response.data);
         setArticles(response.data);
+        setArticlesFiltered(response.data);
       }
     } catch (error) {
       console.log(error);

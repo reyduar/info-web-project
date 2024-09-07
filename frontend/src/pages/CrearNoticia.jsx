@@ -89,8 +89,8 @@ function CrearNoticia() {
               >
                 <option value="">Seleccione una categoría</option>
                 {categorias.map((categoria, index) => (
-                  <option key={index} value={categoria}>
-                    {categoria}
+                  <option key={index} value={categoria.id}>
+                    {categoria.name}
                   </option>
                 ))}
               </select>
@@ -133,7 +133,7 @@ function CrearNoticia() {
             {errors.content && (
               <span className="text-red-500">El contenido es obligatorio</span>
             )}
-          </div>
+          </div> 
           {/* <div className="mb-4">
             <label className="block text-gray-700">Fecha de Publicación</label>
             <input
