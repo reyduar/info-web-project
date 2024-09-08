@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { CategoriaModal, EditorContenido } from "../components";
 import api from "../api";
+import { getCategorias } from "../store/slices/categorias";
 
 function CrearNoticia() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {categorias, isLoading, categoriasErrors} = useSelector((state) => state.categoria);
+  const [messages, setMessages] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categorias, setCategorias] = useState([]);
+
+
   const {
     register,
     handleSubmit,
@@ -42,21 +48,24 @@ function CrearNoticia() {
     setIsModalOpen(false);
   };
 
-  const getCategorias = async () => {
-    try {
-      const response = await api.get("categories/");
-      if (response.status === 200) {
-        console.log(response.data);
-        setCategorias(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+      dispatch(getCategorias()); // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
-    getCategorias();
-  }, []);
+    if(!isLoading && categorias) {
+      setMessages("Seleccione una categoria");
+    }
+
+    if(isLoading) {
+      setMessages("Cargando categorias...");
+    }
+
+    if(categoriasErrors) {
+      setMessages("Error al cargar categorias");
+    }
+  }, [categorias, isLoading, categoriasErrors]);
+
 
   return (
     <div className="flex justify-center mt-10">
@@ -87,12 +96,12 @@ function CrearNoticia() {
                 {...register("category", { required: true })}
                 className="w-full p-2 mt-1 border rounded"
               >
-                <option value="">Seleccione una categoría</option>
+                <option value="">{messages}</option>
                 {categorias.map((categoria, index) => (
                   <option key={index} value={categoria.id}>
                     {categoria.name}
                   </option>
-                ))}
+                ))} 
               </select>
               <button
                 type="button"

@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import api from "../../api";
+import { getCategorias } from "../../store/slices/categorias";
 
 export const CategoriaModal = ({ closeModal }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -16,6 +20,7 @@ export const CategoriaModal = ({ closeModal }) => {
       const payload = { ...data };
       const response = await api.post(`categories/`, payload);
       if (response.status === 201) {
+        dispatch(getCategorias());
         reset();
         closeModal();
       } else {
