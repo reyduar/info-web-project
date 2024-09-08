@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     try {
-      const response = await api.post("/token/refresh/", {
+      const response = await api.post("token/refresh/", {
         refresh: refreshToken,
       });
       if (response.status === 200) {

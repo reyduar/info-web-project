@@ -35,19 +35,16 @@ function Noticias() {
   };
 
   const handleDelete = async (id) => {
-    console.log("====================================");
-    console.log(id);
-    console.log("====================================");
-    // try {
-    //   const response = await api.delete(`articles/delete/${id}}/`);
-    //   if (response.status === 204) {
-    //     getArticles();
-    //   } else {
-    //     alert("Error al eliminar el articulo");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await api.delete(`articles/delete/${parseInt(id)}/`);
+      if (response.status === 204) {
+        getArticles();
+      } else {
+        alert("Error al eliminar el articulo");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

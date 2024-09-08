@@ -145,3 +145,34 @@ npm start
 ```
 
 > entonces vamos a la URL: [http://localhost:3000/](http://localhost:3000/) ya debemos ver la página de presentación de react:
+
+_Base de datos de produccion_
+PostgreSQL alojada en https://console.choreo.dev/
+
+Las variables para el archivo de .env
+
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_NAME=
+DB_PWD=
+
+```bash
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PWD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
+
+    }
+}
+```
+
+al configurar una nueva base hay que correr el comando;
+
+```bash
+python manage.py migrate
+```
