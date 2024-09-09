@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NoticiasLista from "../components/noticias/NoticiasLista";
+import { useGetNoticiasQuery } from "../store/apis/";
 
 function Home() {
+  const { data: articulos = [], error, isLoading } = useGetNoticiasQuery();
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+    if (articulos) {
+      console.log(articulos);
+    }
+  }, [articulos, error, isLoading]);
+
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">
