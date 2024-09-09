@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FaHome, FaNewspaper } from "react-icons/fa";
 
 export const Sidebar = () => {
+  const {username} = useSelector((state) => state.userInfo);
   return (
     <aside className="w-64 bg-gray-800 text-white p-6 shadow-lg">
       <div className="flex flex-col h-full bg-gray-800 text-white">
@@ -37,7 +39,7 @@ export const Sidebar = () => {
               alt="User Avatar"
               className="w-12 h-12 rounded-full object-cover"
             />
-            <span className="text-white font-semibold">Albert Fest</span>
+            <span className="text-white font-semibold">{username}</span>
           </Link>
         </div>
       </div>

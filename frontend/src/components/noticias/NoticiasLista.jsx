@@ -1,58 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getNoticias } from "../../store/slices/noticias";
+import { SimpleTarjetaNoticia } from "./TarjetaNoticia";
 
-const noticiasData = [
-  {
-    categoria: "Tecnología",
-    titulo: "Nuevo lanzamiento de smartphone",
-    contenido:
-      "Se ha lanzado un nuevo smartphone con características innovadoras...",
-    fechaPublicacion: "2024-08-31",
-    autor: "Juan Pérez",
-  },
-  {
-    categoria: "Economía",
-    titulo: "Análisis del mercado bursátil",
-    contenido:
-      "El mercado bursátil ha tenido una semana agitada con movimientos importantes...",
-    fechaPublicacion: "2024-08-30",
-    autor: "María Gómez",
-  },
-  // Agrega más noticias según sea necesario
-];
+
 
 function NoticiasLista() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+  const {isLoading, noticias, errors} = useSelector((state) => state.noticia);
+  const [messages, setMessages] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [articlesFiltered, setArticlesFiltered] = useState([]);
 
-  const filteredNoticias = noticiasData.filter((noticia) =>
-    noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handlerSearch = (e) => {
+    const searchTerm = e.target.value;
+    setArticlesFiltered(
+      articles.filter((noticia) =>
+        noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  };
+
+
+  useEffect(() => {
+    dispatch(getNoticias()); // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if(!isLoading && noticias) {
+      setArticles(noticias);
+      setArticlesFiltered(noticias);
+      
+      setMessages(null);
+    }
+
+    if(isLoading) {
+      setMessages("Cargando noticias...");
+    }
+
+    if(errors) {
+      setMessages("Error al cargar noticias");
+    }
+    
+  }, [noticias, isLoading, errors]);
 
   return (
     <div className="p-6">
+        {messages && <h3 className="text-2xl font-bold">{messages}</h3>}
       <div className="mb-4">
-        <input
+      <input
           type="text"
           placeholder="Buscar por título"
           className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handlerSearch(e)}
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredNoticias.map((noticia, index) => (
-          <div key={index} className="bg-white shadow-lg rounded-lg p-4">
-            <p className="text-sm text-gray-500">{noticia.categoria}</p>
-            <h2 className="text-xl font-semibold text-blue-700 mb-2">
-              {noticia.titulo}
-            </h2>
-            <p className="text-gray-700">{noticia.contenido}</p>
-            <div className="mt-4 flex justify-between items-center">
-              <p className="text-gray-500 text-sm">
-                {noticia.fechaPublicacion}
-              </p>
-              <p className="text-gray-500 text-sm">por {noticia.autor}</p>
-            </div>
-          </div>
+        {articlesFiltered.map((noticia, index) => (
+          <SimpleTarjetaNoticia
+            key={index}
+            noticia={noticia}
+          />
         ))}
       </div>
     </div>

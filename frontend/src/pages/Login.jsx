@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import api from "../api";
 import { ACCCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { loadUserInfo } from "../store/slices/user";
 
 function Login() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,6 +24,7 @@ function Login() {
       if (response.status === 200) {
         localStorage.setItem(ACCCESS_TOKEN, response.data.access);
         localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+        dispatch(loadUserInfo(email.split("@")[0]));
         navigate("/");
       } else {
         alert("Credenciales incorrectas");
