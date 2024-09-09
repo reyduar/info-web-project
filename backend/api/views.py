@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from .serializers import UserSerializer, ArticleSerializer, CategorySerializer, AuthorSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -18,9 +17,7 @@ class CreateUserView(generics.CreateAPIView):
 class CategoriesListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Category.objects.all()
+    queryset = Category.objects.all()
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -31,9 +28,7 @@ class CategoriesListCreateView(generics.ListCreateAPIView):
 class AuthorsListCreateView(generics.ListCreateAPIView):
     serializer_class = AuthorSerializer
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Author.objects.all()
+    queryset = Author.objects.all()
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -41,14 +36,8 @@ class AuthorsListCreateView(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
-class ArticlePagination(PageNumberPagination):
-    page_size = 10  # Número de resultados por página
-    page_size_query_param = 'page_size'  # Permite cambiar el número de resultados por página a través de la URL
-    max_page_size = 10  # Máximo número de resultados por página
-
 class ArticlesListCreate(generics.ListCreateAPIView):
     serializer_class = ArticleSerializer
-    pagination_class = ArticlePagination
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

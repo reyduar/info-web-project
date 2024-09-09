@@ -40,7 +40,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     author_name = serializers.CharField(source='author.full_name', read_only=True)
     class Meta:
         model = Article
-        fields = ["id", "slug", "title", "content",
+        fields = ["id", "title", "slug", "content",
                   "publication_date", "created_by", "author", "category", 'category_name', 'author_name', 'created_by', "active"]
         # author is not return de author to the user in the response
         extra_kwargs = {"created_by": {"read_only": True}}
