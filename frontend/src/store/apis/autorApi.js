@@ -7,10 +7,35 @@ export const autorApi = createApi({
     baseUrl: `/api`,
   }),
   endpoints: (builder) => ({
-    getNoticias: builder.query({
-      query: () => ({ url: "/auhtors/", method: "GET" }),
+    getAuthors: builder.query({
+      query: () => ({ url: "/authors/", method: "GET" }),
+    }),
+    createAuthor: builder.mutation({
+      query: (newAuthor) => ({
+        url: "/authors/",
+        method: "POST",
+        data: newAuthor,
+      }),
+    }),
+    deleteAuthor: builder.mutation({
+      query: (authorId) => ({
+        url: `/authors/${authorId}/`,
+        method: "DELETE",
+      }),
+    }),
+    updateAuthor: builder.mutation({
+      query: ({ authorId, updatedAuthor }) => ({
+        url: `/authors/${authorId}/`,
+        method: "PUT", // Usa PATCH si la API actualiza parcialmente
+        data: updatedAuthor,
+      }),
     }),
   }),
 });
 
-export const { useGetCategoriasQuery } = autorApi;
+export const {
+  useGetAuthorsQuery,
+  useCreateAuthorMutation,
+  useDeleteAuthorMutation,
+  useUpdateAuthorMutation,
+} = autorApi;

@@ -3,5 +3,7 @@ export * from "./noticias/CategoriaModal";
 export * from "./noticias/Calendario";
 export * from "./noticias/EditorContenido";
 export * from "./noticias/TarjetaNoticia";
-export * from "./noticias/AutorModal";
+export * from "./autor/AutorModal";
+export * from "./autor/AuthorList";
+export * from "./noticias/NoResults";
 export * from "./ui/Alert";

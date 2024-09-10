@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { TarjetaNoticia } from "../components";
+import { TarjetaNoticia, NoResults } from "../components";
 import { getNoticias } from "../store/slices/noticias";
 import { axiosInstance } from "../lib";
 import { useGetNoticiasQuery } from "../store/apis";
@@ -47,7 +47,7 @@ function Noticias() {
     if (!isLoading && noticias) {
       setArticles(noticias);
       setArticlesFiltered(noticias);
-      setMessages(null);
+      setMessages(noticias.length > 0 ? "Noticias" : "");
     }
 
     if (isLoading) {
@@ -62,7 +62,6 @@ function Noticias() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Noticias</h1>
         {messages && <h1 className="text-2xl font-bold">{messages}</h1>}
         <button
           onClick={handleCrearNoticia}
@@ -71,23 +70,29 @@ function Noticias() {
           Crear Noticia
         </button>
       </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Buscar por título"
-          className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
-          onChange={(e) => handlerSearch(e)}
-        />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articlesFiltered.map((noticia, index) => (
-          <TarjetaNoticia
-            key={index}
-            noticia={noticia}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {noticias.length > 0 ? (
+        <div>
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Buscar por título"
+              className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
+              onChange={(e) => handlerSearch(e)}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {articlesFiltered.map((noticia, index) => (
+              <TarjetaNoticia
+                key={index}
+                noticia={noticia}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <NoResults />
+      )}
     </div>
   );
 }

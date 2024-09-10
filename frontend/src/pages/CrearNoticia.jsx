@@ -5,8 +5,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { AutorModal, CategoriaModal, EditorContenido } from "../components";
 import { axiosInstance } from "../lib";
 import { getCategorias } from "../store/slices/categorias";
+import { useGetAuthorsQuery } from "../store/apis";
 
 function CrearNoticia() {
+  const {
+    data: autores = [],
+    error: autoresErrors,
+    isLoading: isLoadingAutores,
+  } = useGetAuthorsQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -14,11 +20,7 @@ function CrearNoticia() {
     isLoading,
     categoriasErrors,
   } = useSelector((state) => state.categoria);
-  const {
-    autores = [],
-    isLoadingAutores,
-    autoresErrors,
-  } = useSelector((state) => state.autor);
+
   const [categoryMessages, setCategoryMessages] = useState(null);
   const [autorMessages, setAutorMessages] = useState(null);
   const [isCategoriaModalOpen, setCategoriaIsModalOpen] = useState(false);
@@ -33,7 +35,6 @@ function CrearNoticia() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const payload = {
         ...data,
@@ -139,7 +140,7 @@ function CrearNoticia() {
                 onClick={openCategoriaModal}
                 className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
-                Agregar Categoría
+                +
               </button>
             </div>
             {errors.category && (
@@ -165,7 +166,7 @@ function CrearNoticia() {
                 onClick={openAutorModal}
                 className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
-                Agregar Autor
+                +
               </button>
             </div>
             {errors.category && (
