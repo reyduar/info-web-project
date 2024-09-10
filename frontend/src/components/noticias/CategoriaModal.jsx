@@ -1,11 +1,18 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import api from "../../api";
-import { getCategorias } from "../../store/slices/categorias";
+import { createCategoria } from "../../store/slices/categorias";
+import { useAlert } from "../../hooks/useAlert";
+import { Alert } from "../ui/Alert";
 
 export const CategoriaModal = ({ closeModal }) => {
   const dispatch = useDispatch();
+  const [alert, triggerAlert] = useAlert();
+  const {
+    createCategoriaSuccess,
+    isLoadingCreateCategoria,
+    createCategoriaErrors,
+  } = useSelector((state) => state.categoria);
 
   const {
     register,
@@ -15,26 +22,32 @@ export const CategoriaModal = ({ closeModal }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    try {
-      const payload = { ...data };
-      const response = await api.post(`categories/`, payload);
-      if (response.status === 201) {
-        dispatch(getCategorias());
-        reset();
-        closeModal();
-      } else {
-        alert("Error al crear la categoria");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(createCategoria({ ...data }));
   };
+
+  useEffect(() => {
+    if (!isLoadingCreateCategoria && createCategoriaSuccess) {
+      reset();
+      closeModal();
+      triggerAlert("success", "La categoria se ha creado correctamente");
+    }
+
+    if (isLoadingCreateCategoria) {
+      triggerAlert("warning", "Creando nueva categoria...");
+    }
+
+    if (createCategoriaErrors) {
+      triggerAlert("error", "Error al crear la categoria");
+    }
+    // eslint-disable-next-line
+  }, [createCategoriaSuccess, isLoadingCreateCategoria, createCategoriaErrors]);
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6">Agregar Categoría</h2>
+        {/* Mostrar la alerta si está activa */}
+        {alert.message && <Alert type={alert.type} message={alert.message} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label className="block text-gray-700">Nombre</label>

@@ -4,6 +4,10 @@ const initialState = {
   categorias: [],
   isLoading: false,
   categoriasErrors: null,
+  setCreateCategoria: null,
+  createCategoriaSuccess: null,
+  isLoadingCreateCategoria: false,
+  createCategoriaErrors: null,
 };
 
 export const categoriasSlice = createSlice({
@@ -22,9 +26,29 @@ export const categoriasSlice = createSlice({
       state.categoriasErrors = action.payload;
       state.isLoading = false;
     },
+    setCreateCategoria: (state) => {
+      state.isLoadingCreateCategoria = true;
+      state.createCategoriaErrors = null;
+      state.createCategoriaSuccess = null;
+    },
+    createCategoriaSuccess: (state, action) => {
+      state.createCategoriaSuccess = action.payload;
+      state.isLoadingCreateCategoria = false;
+    },
+    createCategoriaErrors: (state, action) => {
+      state.createCategoriaErrors = action.payload;
+      state.isLoadingCreateCategoria = false;
+      state.createCategoria = null;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loadCategorias, loadCategoriasSuccess, loadCategoriasErrors } =
-  categoriasSlice.actions;
+export const {
+  loadCategorias,
+  loadCategoriasSuccess,
+  loadCategoriasErrors,
+  setCreateCategoria,
+  createCategoriaSuccess,
+  createCategoriaErrors,
+} = categoriasSlice.actions;

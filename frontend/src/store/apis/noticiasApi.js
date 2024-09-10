@@ -1,25 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ACCCESS_TOKEN } from "../../constants";
-import { API_URL } from "../../config";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "../../lib";
 
 export const noticiasApi = createApi({
   reducerPath: "noticiasApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}/api/`,
-    prepareHeaders: (headers) => {
-      headers.set(
-        "Authorization",
-        `Bearer ${localStorage.getItem(ACCCESS_TOKEN)}`
-      );
-      return headers;
-    },
+  baseQuery: axiosBaseQuery({
+    baseUrl: `/api`,
   }),
   endpoints: (builder) => ({
     getNoticias: builder.query({
-      query: () => "articles/",
+      query: () => ({ url: "/articles/", method: "GET" }),
     }),
     getNoticiasByTitle: builder.query({
-      query: (title) => `articles/${title}`,
+      query: (title) => ({ url: `/articles/${title}/`, method: "GET" }),
     }),
   }),
 });

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import api from "../../api";
-import { REFRESH_TOKEN, ACCCESS_TOKEN } from "../../constants";
+import { axiosInstance } from "../../lib";
+import { REFRESH_TOKEN, ACCCESS_TOKEN } from "../../config/constants";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthorized, SetIsAuthorized] = useState(null);
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     try {
-      const response = await api.post("token/refresh/", {
+      const response = await axiosInstance.post("api/token/refresh/", {
         refresh: refreshToken,
       });
       if (response.status === 200) {

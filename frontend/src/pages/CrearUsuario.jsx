@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api";
+import { axiosInstance } from "../lib";
 
 function CrearUsuario() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function CrearUsuario() {
     setLoading(true);
     const payload = { username: email, password: password };
     try {
-      const response = await api.post("user/register/", payload);
+      const response = await axiosInstance.post("user/register/", payload);
       if (response.status === 201) {
         navigate("/register");
       } else {

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia } from "../components";
 import { getNoticias } from "../store/slices/noticias";
-import api from "../api";
+import { axiosInstance } from "../lib";
+import { useGetNoticiasQuery } from "../store/apis";
 
 function Noticias() {
   const dispatch = useDispatch();
-  const {isLoading, noticias, errors} = useSelector((state) => state.noticia);
+  // const { isLoading, noticias, errors } = useSelector((state) => state.noticia);
+  const { data: noticias = [], error, isLoading } = useGetNoticiasQuery();
   const [messages, setMessages] = useState(null);
   const [articles, setArticles] = useState([]);
   const [articlesFiltered, setArticlesFiltered] = useState([]);
@@ -28,9 +30,11 @@ function Noticias() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await api.delete(`articles/delete/${parseInt(id)}/`);
+      const response = await axiosInstance.delete(
+        `articles/delete/${parseInt(id)}/`
+      );
       if (response.status === 204) {
-        dispatch(getNoticias())
+        dispatch(getNoticias());
       } else {
         alert("Error al eliminar el articulo");
       }
@@ -40,25 +44,20 @@ function Noticias() {
   };
 
   useEffect(() => {
-    dispatch(getNoticias()); // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if(!isLoading && noticias) {
+    if (!isLoading && noticias) {
       setArticles(noticias);
       setArticlesFiltered(noticias);
       setMessages(null);
     }
 
-    if(isLoading) {
+    if (isLoading) {
       setMessages("Cargando noticias...");
     }
 
-    if(errors) {
+    if (error) {
       setMessages("Error al cargar noticias");
     }
-    
-  }, [noticias, isLoading, errors]);
+  }, [noticias, isLoading, error]);
 
   return (
     <div className="p-6">

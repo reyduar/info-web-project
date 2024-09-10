@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import api from "../api";
-import { ACCCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { axiosInstance } from "../lib";
+import { ACCCESS_TOKEN, REFRESH_TOKEN } from "../config/constants";
 import { loadUserInfo } from "../store/slices/user";
 
 function Login() {
@@ -20,7 +20,10 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await api.post("token/", { username: email, password });
+      const response = await axiosInstance.post("api/token/", {
+        username: email,
+        password,
+      });
       if (response.status === 200) {
         localStorage.setItem(ACCCESS_TOKEN, response.data.access);
         localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
