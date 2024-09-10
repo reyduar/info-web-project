@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { axiosInstance } from "../../lib";
+import { axiosInstance } from "../../infrastructure";
 import { REFRESH_TOKEN, ACCCESS_TOKEN } from "../../config/constants";
 
 const ProtectedRoute = ({ children }) => {

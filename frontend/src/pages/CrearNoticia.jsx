@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AutorModal, CategoriaModal, EditorContenido } from "../components";
-import { axiosInstance } from "../lib";
+import { axiosInstance } from "../infrastructure";
 import { getCategorias } from "../store/slices/categorias";
 import { useGetAuthorsQuery } from "../store/apis";
 

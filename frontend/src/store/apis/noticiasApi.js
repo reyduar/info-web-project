@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosBaseQuery } from "../../lib";
+import { axiosBaseQuery } from "../../infrastructure";
 
 export const noticiasApi = createApi({
   reducerPath: "noticiasApi",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { axiosInstance } from "../lib";
+import { axiosInstance } from "../infrastructure";
 import { ACCCESS_TOKEN, REFRESH_TOKEN } from "../config/constants";
 import { loadUserInfo } from "../store/slices/user";
 

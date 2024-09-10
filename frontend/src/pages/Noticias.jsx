@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia, NoResults } from "../components";
 import { getNoticias } from "../store/slices/noticias";
-import { axiosInstance } from "../lib";
+import { axiosInstance } from "../infrastructure";
 import { useGetNoticiasQuery } from "../store/apis";
 
 function Noticias() {

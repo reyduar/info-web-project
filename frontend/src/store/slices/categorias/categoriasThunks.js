@@ -6,7 +6,7 @@ import {
   createCategoriaSuccess,
   createCategoriaErrors,
 } from "../../slices/categorias";
-import { axiosInstance } from "../../../lib";
+import { axiosInstance } from "../../../infrastructure";
 
 export const getCategorias = () => async (dispatch) => {
   try {

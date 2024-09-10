@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosInstance } from "../lib";
+import { axiosInstance } from "../infrastructure";
 
 function CrearUsuario() {
   const navigate = useNavigate();

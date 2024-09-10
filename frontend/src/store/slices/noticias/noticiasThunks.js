@@ -3,7 +3,7 @@ import {
   loadNoticiasSuccess,
   loadNoticiasErrors,
 } from "../noticias";
-import { axiosInstance } from "../../../lib";
+import { axiosInstance } from "../../../infrastructure";
 
 export const getNoticias = () => async (dispatch) => {
   try {
