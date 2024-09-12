@@ -77,7 +77,7 @@ class ArticleDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Article.objects.filter(author=user)
+        return Article.objects.filter(created_by=user)
     
 
 class AuthorDelete(generics.DestroyAPIView):
