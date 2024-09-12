@@ -3,9 +3,14 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AutorModal, CategoriaModal, EditorContenido } from "../components";
-import { axiosInstance } from "../infrastructure";
 import { getCategorias } from "../store/slices/categorias";
-import { useGetAuthorsQuery } from "../store/apis";
+import {
+  useGetAuthorsQuery,
+  useCreateArticleMutation,
+  useGetNoticiasQuery,
+} from "../store/apis";
+import { useAlert } from "../hooks";
+import { Alert } from "../components/ui/Alert";
 
 function CrearNoticia() {
   const {
@@ -17,10 +22,13 @@ function CrearNoticia() {
   const navigate = useNavigate();
   const {
     categorias = [],
-    isLoading,
+    isLoading: isLoadingCategorias,
     categoriasErrors,
   } = useSelector((state) => state.categoria);
-
+  const [alert, triggerAlert] = useAlert();
+  const [createArticle, { isLoading: isLoadingCreateArticle }] =
+    useCreateArticleMutation();
+  const { refetch } = useGetNoticiasQuery();
   const [categoryMessages, setCategoryMessages] = useState(null);
   const [autorMessages, setAutorMessages] = useState(null);
   const [isCategoriaModalOpen, setCategoriaIsModalOpen] = useState(false);
@@ -35,19 +43,20 @@ function CrearNoticia() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data);
+
+    isLoadingCreateArticle &&
+      triggerAlert("warning", "Creando nueva noticia...");
     try {
-      const payload = {
-        ...data,
-      };
-      const response = await axiosInstance.post(`articles/`, payload);
-      if (response.status === 201) {
-        reset();
-        navigate("/noticias");
-      } else {
-        alert("Error al eliminar el articulo");
-      }
-    } catch (error) {
-      console.log(error);
+      await createArticle({ ...data }).unwrap();
+      reset();
+      triggerAlert("success", "Noticia creada correctamente");
+      refetch();
+    } catch (err) {
+      triggerAlert(
+        "error",
+        `Error al crear la noticia: ${JSON.stringify(err)}`
+      );
     }
   };
 
@@ -72,18 +81,18 @@ function CrearNoticia() {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && categorias) {
+    if (!isLoadingCategorias && categorias) {
       setCategoryMessages("Seleccione una categoria");
     }
 
-    if (isLoading) {
+    if (isLoadingCategorias) {
       setCategoryMessages("Cargando categorias...");
     }
 
     if (categoriasErrors) {
       setCategoryMessages("Error al cargar categorias");
     }
-  }, [categorias, isLoading, categoriasErrors]);
+  }, [categorias, isLoadingCategorias, categoriasErrors]);
 
   useEffect(() => {
     if (!isLoadingAutores && autores) {
@@ -109,6 +118,7 @@ function CrearNoticia() {
           &larr; Volver al listado de noticias
         </button>
         <h2 className="text-2xl font-bold mb-6">Crear Noticia</h2>
+        {alert.message && <Alert type={alert.type} message={alert.message} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label className="block text-gray-700">Título</label>

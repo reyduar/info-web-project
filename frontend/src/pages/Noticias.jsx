@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia, NoResults } from "../components";
-import { getNoticias } from "../store/slices/noticias";
-import { axiosInstance } from "../infrastructure";
-import { useGetNoticiasQuery } from "../store/apis";
+import { useGetNoticiasQuery, useDeleteArticleMutation } from "../store/apis";
+import { useAlert } from "../hooks";
+import { Alert } from "../components/ui/Alert";
 
 function Noticias() {
-  const dispatch = useDispatch();
-  // const { isLoading, noticias, errors } = useSelector((state) => state.noticia);
-  const { data: noticias = [], error, isLoading } = useGetNoticiasQuery();
+  const [alert, triggerAlert] = useAlert();
+  const [deleteArticle, { isLoading: isLoadingDeleteArticle }] =
+    useDeleteArticleMutation();
+  const {
+    data: noticias = [],
+    error,
+    isLoading,
+    refetch,
+  } = useGetNoticiasQuery();
   const [messages, setMessages] = useState(null);
   const [articles, setArticles] = useState([]);
   const [articlesFiltered, setArticlesFiltered] = useState([]);
@@ -29,17 +34,16 @@ function Noticias() {
   };
 
   const handleDelete = async (id) => {
+    isLoadingDeleteArticle && triggerAlert("warning", "Eliminando noticia...");
     try {
-      const response = await axiosInstance.delete(
-        `articles/delete/${parseInt(id)}/`
+      await deleteArticle(id).unwrap();
+      triggerAlert("success", "Noticia eliminada con éxito");
+      refetch();
+    } catch (err) {
+      triggerAlert(
+        "error",
+        `Error al eliminarla noticia:', ${JSON.stringify(err)}`
       );
-      if (response.status === 204) {
-        dispatch(getNoticias());
-      } else {
-        alert("Error al eliminar el articulo");
-      }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -70,6 +74,7 @@ function Noticias() {
           Crear Noticia
         </button>
       </div>
+
       {noticias.length > 0 ? (
         <div>
           <div className="mb-4">
@@ -79,6 +84,11 @@ function Noticias() {
               className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
               onChange={(e) => handlerSearch(e)}
             />
+          </div>
+          <div class="grid grid-cols-1 gap-4 w-full bg-gray-100">
+            {alert.message && (
+              <Alert type={alert.type} message={alert.message} />
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articlesFiltered.map((noticia, index) => (

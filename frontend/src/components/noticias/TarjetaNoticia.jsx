@@ -1,9 +1,9 @@
-import { FaPencil, FaTrashCan } from "react-icons/fa6";
+import { FaTrashCan } from "react-icons/fa6";
 
 export const TarjetaNoticia = ({ noticia, onDelete }) => {
   const { id, title, category_name, content, publication_date, author_name } =
     noticia;
-  const editOnClick = (item) => {};
+  // const editOnClick = (item) => {};
   const deleteOnClick = (item) => onDelete(item);
   const formatterDate = new Date(publication_date).toLocaleString("en-UK");
   const publicationDate = formatterDate.split(",")[0];
@@ -27,16 +27,16 @@ export const TarjetaNoticia = ({ noticia, onDelete }) => {
         dangerouslySetInnerHTML={{ __html: truncateText(content, 150) }}
       ></p>
       <div className="text-sm text-gray-500">
-        <span>By {authorName}</span>
-        <p>{publicationDate}</p>
+        <span>Por {authorName}</span>
       </div>
       <div className="flex justify-between items-center space-x-2">
-        <button
+        {/* <button
           onClick={() => editOnClick(noticia)}
           className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full"
         >
           <FaPencil />
-        </button>
+        </button> */}
+        <p className="text-sm text-gray-500">{publicationDate}</p>
         <button
           onClick={() => deleteOnClick(id)}
           className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
@@ -47,7 +47,6 @@ export const TarjetaNoticia = ({ noticia, onDelete }) => {
     </div>
   );
 };
-
 
 export const SimpleTarjetaNoticia = ({ noticia }) => {
   const { title, category_name, content, publication_date, author_name } =
@@ -77,7 +76,6 @@ export const SimpleTarjetaNoticia = ({ noticia }) => {
         <span>By {authorName}</span>
         <p>{publicationDate}</p>
       </div>
-      
     </div>
   );
 };

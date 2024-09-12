@@ -13,7 +13,25 @@ export const noticiasApi = createApi({
     getNoticiasByTitle: builder.query({
       query: (title) => ({ url: `/articles/${title}/`, method: "GET" }),
     }),
+    createArticle: builder.mutation({
+      query: (newArticles) => ({
+        url: "/articles/",
+        method: "POST",
+        data: newArticles,
+      }),
+    }),
+    deleteArticle: builder.mutation({
+      query: (articleId) => ({
+        url: `/articles/delete/${parseInt(articleId)}/`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetNoticiasQuery, getNoticiasByTitle } = noticiasApi;
+export const {
+  useGetNoticiasQuery,
+  getNoticiasByTitle,
+  useCreateArticleMutation,
+  useDeleteArticleMutation,
+} = noticiasApi;

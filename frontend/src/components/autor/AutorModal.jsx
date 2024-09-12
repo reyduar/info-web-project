@@ -6,7 +6,7 @@ import { useCreateAuthorMutation, useGetAuthorsQuery } from "../../store/apis";
 
 export const AutorModal = ({ closeModal }) => {
   const [alert, triggerAlert] = useAlert();
-  const [createAuthor, { isLoading, error }] = useCreateAuthorMutation();
+  const [createAuthor, { isLoading }] = useCreateAuthorMutation();
   const { refetch } = useGetAuthorsQuery();
   const {
     register,
@@ -23,7 +23,7 @@ export const AutorModal = ({ closeModal }) => {
       triggerAlert("success", "El autor se ha creado correctamente");
       refetch();
     } catch (err) {
-      triggerAlert("error", `Error al crear el autor: ${error}`);
+      triggerAlert("error", `Error al crear el autor: ${JSON.stringify(err)}`);
     }
   };
 
