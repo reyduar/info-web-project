@@ -42,8 +42,8 @@ class ArticlesListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        title = self.kwargs.get('title', None)
-        if title is None:
+        title = self.kwargs.get('title')
+        if title == "all":
             return Article.objects.filter(created_by=user, active=True)
         else:
             return Article.objects.filter(title__contains=title, created_by=user, active=True)
