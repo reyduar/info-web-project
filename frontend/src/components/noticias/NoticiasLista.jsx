@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { SimpleTarjetaNoticia } from "./TarjetaNoticia";
 import { NoResults } from "./NoResults";
-import { useGetNoticiasQuery } from "../../store/apis";
+import { useGetNoticiasByTitleQuery } from "../../store/apis";
 
 function NoticiasLista() {
-  const { data: noticias = [], error, isLoading } = useGetNoticiasQuery();
+  const [searchTerm, setSearchTerm] = useState(null);
+  const {
+    data: noticias = [],
+    error,
+    isLoading,
+  } = useGetNoticiasByTitleQuery(searchTerm);
   const [messages, setMessages] = useState(null);
   const [articles, setArticles] = useState([]);
-  const [articlesFiltered, setArticlesFiltered] = useState([]);
 
   const handlerSearch = (e) => {
-    const searchTerm = e.target.value;
-    setArticlesFiltered(
-      articles.filter((noticia) =>
-        noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
     if (!isLoading && noticias) {
       setArticles(noticias);
-      setArticlesFiltered(noticias);
-
       setMessages(null);
     }
 
@@ -49,7 +46,7 @@ function NoticiasLista() {
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articlesFiltered.map((noticia, index) => (
+            {articles.map((noticia, index) => (
               <SimpleTarjetaNoticia key={index} noticia={noticia} />
             ))}
           </div>

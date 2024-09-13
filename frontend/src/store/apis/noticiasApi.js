@@ -11,7 +11,10 @@ export const noticiasApi = createApi({
       query: () => ({ url: "/articles/", method: "GET" }),
     }),
     getNoticiasByTitle: builder.query({
-      query: (title) => ({ url: `/articles/${title}/`, method: "GET" }),
+      query: (title) => ({
+        url: `/articles/${title ? title : "all"}/`,
+        method: "GET",
+      }),
     }),
     createArticle: builder.mutation({
       query: (newArticles) => ({
@@ -31,7 +34,7 @@ export const noticiasApi = createApi({
 
 export const {
   useGetNoticiasQuery,
-  getNoticiasByTitle,
+  useGetNoticiasByTitleQuery,
   useCreateArticleMutation,
   useDeleteArticleMutation,
 } = noticiasApi;

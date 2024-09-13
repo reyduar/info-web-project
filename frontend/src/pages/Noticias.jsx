@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TarjetaNoticia, NoResults } from "../components";
-import { useGetNoticiasQuery, useDeleteArticleMutation } from "../store/apis";
+import {
+  useGetNoticiasByTitleQuery,
+  useDeleteArticleMutation,
+} from "../store/apis";
 import { useAlert } from "../hooks";
 import { Alert } from "../components/ui/Alert";
 
@@ -9,15 +12,15 @@ function Noticias() {
   const [alert, triggerAlert] = useAlert();
   const [deleteArticle, { isLoading: isLoadingDeleteArticle }] =
     useDeleteArticleMutation();
+  const [searchTerm, setSearchTerm] = useState(null);
   const {
     data: noticias = [],
     error,
     isLoading,
     refetch,
-  } = useGetNoticiasQuery();
+  } = useGetNoticiasByTitleQuery(searchTerm);
   const [messages, setMessages] = useState(null);
   const [articles, setArticles] = useState([]);
-  const [articlesFiltered, setArticlesFiltered] = useState([]);
   const navigate = useNavigate();
 
   const handleCrearNoticia = () => {
@@ -25,12 +28,7 @@ function Noticias() {
   };
 
   const handlerSearch = (e) => {
-    const searchTerm = e.target.value;
-    setArticlesFiltered(
-      articles.filter((noticia) =>
-        noticia.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    setSearchTerm(e.target.value);
   };
 
   const handleDelete = async (id) => {
@@ -50,7 +48,6 @@ function Noticias() {
   useEffect(() => {
     if (!isLoading && noticias) {
       setArticles(noticias);
-      setArticlesFiltered(noticias);
       setMessages(noticias.length > 0 ? "Noticias" : "");
     }
 
@@ -91,7 +88,7 @@ function Noticias() {
             )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articlesFiltered.map((noticia, index) => (
+            {articles.map((noticia, index) => (
               <TarjetaNoticia
                 key={index}
                 noticia={noticia}

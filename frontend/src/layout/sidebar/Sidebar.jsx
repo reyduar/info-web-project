@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FaHome, FaNewspaper } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 
 export const Sidebar = () => {
-  const {username} = useSelector((state) => state.userInfo);
+  const { username } = useSelector((state) => state.userInfo);
   return (
     <aside className="w-64 bg-gray-800 text-white p-6 shadow-lg">
       <div className="flex flex-col h-full bg-gray-800 text-white">
@@ -20,14 +20,14 @@ export const Sidebar = () => {
                   <FaHome className="mr-2" /> Inicio
                 </Link>
               </li>
-              <li className="mb-4">
+              {/* <li className="mb-4">
                 <Link
                   to="/noticias"
                   className="block py-2 px-4 rounded hover:bg-gray-600 transition flex items-center"
                 >
                   <FaNewspaper className="mr-2" /> Noticias
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>
