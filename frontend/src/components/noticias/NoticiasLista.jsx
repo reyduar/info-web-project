@@ -35,16 +35,16 @@ function NoticiasLista() {
   return (
     <div className="p-6">
       {messages && <h3 className="text-2xl font-bold">{messages}</h3>}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Buscar por título"
+          className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
+          onChange={(e) => handlerSearch(e)}
+        />
+      </div>
       {noticias.length > 0 ? (
         <div>
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Buscar por título"
-              className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
-              onChange={(e) => handlerSearch(e)}
-            />
-          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((noticia, index) => (
               <SimpleTarjetaNoticia key={index} noticia={noticia} />

@@ -72,16 +72,16 @@ function Noticias() {
         </button>
       </div>
 
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Buscar por título"
+          className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
+          onChange={(e) => handlerSearch(e)}
+        />
+      </div>
       {noticias.length > 0 ? (
         <div>
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Buscar por título"
-              className="w-full px-4 py-2 border border-gray-300 rounded shadow-sm"
-              onChange={(e) => handlerSearch(e)}
-            />
-          </div>
           <div class="grid grid-cols-1 gap-4 w-full bg-gray-100">
             {alert.message && (
               <Alert type={alert.type} message={alert.message} />
