@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa";
+import { USERNAME } from "../../config/constants";
 
 export const Sidebar = () => {
-  const { username } = useSelector((state) => state.userInfo);
+  const username = localStorage.getItem(USERNAME);
   return (
     <aside className="w-64 bg-gray-800 text-white p-6 shadow-lg">
       <div className="flex flex-col h-full bg-gray-800 text-white">
