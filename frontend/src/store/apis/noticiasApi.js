@@ -4,7 +4,7 @@ import { axiosBaseQuery } from "../../infrastructure";
 export const noticiasApi = createApi({
   reducerPath: "noticiasApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: `/api`,
+    baseUrl: `/articles`,
   }),
   endpoints: (builder) => ({
     getNoticias: builder.query({
@@ -12,20 +12,20 @@ export const noticiasApi = createApi({
     }),
     getNoticiasByTitle: builder.query({
       query: (title) => ({
-        url: `/articles/${title ? title : "all"}/`,
+        url: `/${title ? title : "all"}/`,
         method: "GET",
       }),
     }),
     createArticle: builder.mutation({
       query: (newArticles) => ({
-        url: "/articles/",
+        url: "/",
         method: "POST",
         data: newArticles,
       }),
     }),
     deleteArticle: builder.mutation({
       query: (articleId) => ({
-        url: `/articles/delete/${parseInt(articleId)}/`,
+        url: `/delete/${parseInt(articleId)}/`,
         method: "DELETE",
       }),
     }),

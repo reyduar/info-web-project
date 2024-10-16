@@ -2,6 +2,98 @@
 
 Info web project es un proyecto donde implementamos un frontend con React + Tailwind CSS y un backend con Django + PostgresSQL
 
+### Pasos ejecutar el Backend
+
+1. Instalar PostgreSQL, crear un base con un usuario y contraseña
+2. Usar el archivo .env.template como base para un arhivo .env en la carpeta backend
+   DB_HOST=[nombre_maquina_localhost]
+   DB_PORT=[puerto_correr_postgres_5432]
+   DB_USER=[usuario_base_datos]
+   DB_NAME=[nombre_base_datos]
+   DB_PWD=[password_base_datos]
+3. Crear el entorno virtual, en caso de no tener uno, correr el siguiente commando en el directorio principal del proyecto:
+
+```bash
+python -m venv envs
+```
+
+4. Activar el entorno virtual
+
+En Windows:
+
+```bash
+cd envs
+```
+
+```bash
+Scripts\activate
+```
+
+En Mac:
+
+```bash
+source ./envs/bin/activate
+```
+
+5. Instalar librerias de python, solo la primera vez;
+
+Ir al directorio:
+
+```bash
+cd backend
+```
+
+Ejecutamos:
+
+```bash
+pip install -r requirements.txt
+```
+
+6. Migracion del modelo a la base de datos:
+
+```bash
+python manage.py makemigrations
+```
+
+Para actualizar la base de datos
+
+```bash
+python manage.py migrate
+```
+
+7. Correr la API localmente
+
+```bash
+python manage.py runserver
+```
+
+### Pasos ejecutar Frontend
+
+1. Instalar Node.js (Version 18)
+   - [win-x64](https://nodejs.org/download/release/latest-v18.x/win-x64/)
+   - [win-x82](https://nodejs.org/download/release/latest-v18.x/win-x86/)
+2. Ir a la carpeta de frontend:
+
+```bash
+cd frontend
+```
+
+3. Instalar dependencias
+
+```bash
+npm install
+```
+
+4. Correr la app de react
+
+```bash
+npm start
+```
+
+---
+
+## Como fue creado este proyecto
+
 ### Autor
 
 - Ariel Duarte

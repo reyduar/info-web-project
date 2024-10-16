@@ -4,28 +4,28 @@ import { axiosBaseQuery } from "../../infrastructure";
 export const autorApi = createApi({
   reducerPath: "autorApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: `/api`,
+    baseUrl: `/authors`,
   }),
   endpoints: (builder) => ({
     getAuthors: builder.query({
-      query: () => ({ url: "/authors/", method: "GET" }),
+      query: () => ({ url: "/", method: "GET" }),
     }),
     createAuthor: builder.mutation({
       query: (newAuthor) => ({
-        url: "/authors/",
+        url: "/",
         method: "POST",
         data: newAuthor,
       }),
     }),
     deleteAuthor: builder.mutation({
       query: (authorId) => ({
-        url: `/authors/${authorId}/`,
+        url: `/${authorId}/`,
         method: "DELETE",
       }),
     }),
     updateAuthor: builder.mutation({
       query: ({ authorId, updatedAuthor }) => ({
-        url: `/authors/${authorId}/`,
+        url: `/${authorId}/`,
         method: "PUT", // Usa PATCH si la API actualiza parcialmente
         data: updatedAuthor,
       }),

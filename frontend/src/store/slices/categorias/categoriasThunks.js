@@ -11,7 +11,7 @@ import { axiosInstance } from "../../../infrastructure";
 export const getCategorias = () => async (dispatch) => {
   try {
     dispatch(loadCategorias());
-    const response = await axiosInstance.get("api/categories/");
+    const response = await axiosInstance.get("categories/");
     if (response.status === 200) {
       dispatch(loadCategoriasSuccess(response.data));
     }
@@ -24,7 +24,7 @@ export const getCategorias = () => async (dispatch) => {
 export const createCategoria = (payload) => async (dispatch) => {
   try {
     dispatch(setCreateCategoria());
-    const response = await axiosInstance.post("api/categories/", payload);
+    const response = await axiosInstance.post("categories/", payload);
     if (response.status === 201) {
       dispatch(createCategoriaSuccess(response.data));
       dispatch(getCategorias());
